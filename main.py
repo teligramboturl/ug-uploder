@@ -68,6 +68,20 @@ import apixug
 from apixug import SecureAPIClient
 from db import db
 
+# safe conversion functions
+def safe_int(val, default=0):
+    try:
+        return int(val)
+    except:
+        return default
+
+def safe_float(val, default=0.0):
+    try:
+        return float(val)
+    except:
+        return default
+
+
 auto_flags = {}
 auto_clicked = False
 client = SecureAPIClient()
@@ -662,8 +676,8 @@ async def txt_handler(bot: Client, m: Message):
         await m.reply_text(f"**Fail Reason »**\n<blockquote><i>{e}</i></blockquote>\n\n✦𝐁𝐨𝐭 𝐌𝐚𝐝𝐞 𝐁𝐲 ✦ {CREDIT}🌟`")
 
     failed_count = 0
-    count =int(raw_text)    
-    arg = int(raw_text)
+    count = safe_int(raw_text)    
+    arg = safe_int(raw_text)
     try:
         for i in range(arg-1, len(links)):
             Vxy = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","")
@@ -835,11 +849,11 @@ async def txt_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
+                ytf = f"bv*[height<={safe_int(raw_text2)}][ext=mp4]+ba[ext=m4a]/b[height<=?{safe_int(raw_text2)}]"
             elif "embed" in url:
-                ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
+                ytf = f"bestvideo[height<={safe_int(raw_text2)}]+bestaudio/best[height<={safe_int(raw_text2)}]"
             else:
-                ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
+                ytf = f"b[height<={safe_int(raw_text2)}]/bv[height<={safe_int(raw_text2)}]+ba/b/bv+ba"
            
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
@@ -1282,11 +1296,11 @@ async def text_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
+                ytf = f"bv*[height<={safe_int(raw_text2)}][ext=mp4]+ba[ext=m4a]/b[height<=?{safe_int(raw_text2)}]"
             elif "embed" in url:
-                ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
+                ytf = f"bestvideo[height<={safe_int(raw_text2)}]+bestaudio/best[height<={safe_int(raw_text2)}]"
             else:
-                ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
+                ytf = f"b[height<={safe_int(raw_text2)}]/bv[height<={safe_int(raw_text2)}]+ba/b/bv+ba"
            
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
