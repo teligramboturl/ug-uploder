@@ -586,7 +586,27 @@ async def txt_handler(bot: Client, m: Message):
         raw_text3 = input3.text
         await input3.delete(True)
     except asyncio.TimeoutError:
-        raw_text3 = '/d' 
+        raw_text3 = '/d'
+
+    if raw_text3 == '/d':
+        watermark = ""
+    else:
+        watermark = raw_text3
+
+    ffmpeg_cmd = [
+        "ffmpeg",
+        "-i", input_file,
+    ]
+
+    if watermark != "":
+        ffmpeg_cmd += [
+            "-vf", f"drawtext=text='{watermark}':x=(w-tw)/2:y=h-th-20:fontsize=24:fontcolor=white:box=1:boxcolor=black@0.5"
+        ]
+    ffmpeg_cmd += [output_file]
+        
+    
+
+
         
     if raw_text3 == '/d':
         CR = f"{CREDIT}"
