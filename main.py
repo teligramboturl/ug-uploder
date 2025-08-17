@@ -1293,10 +1293,34 @@ async def text_handler(bot: Client, m: Message):
             elif "webvideos.classplusapp." in url:
                cmd = f'yt-dlp --add-header "referer:https://web.classplusapp.com/" --add-header "x-cdn-tag:empty" -f "{ytf}" "{url}" -o "{name}.mp4"'
             elif "youtube.com" in url or "youtu.be" in url:
-                cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
+                try:
+                    from yt_dlp import YoutubeDL
+                    ydl_opts = {"quiet": True, "skip_download": True}
+                    with YoutubeDL(ydl_opts) as ydl:
+                        info = ydl.extract_info(url, download=False)
+                        yt_title = info.get("title")
+                        yt_thumb = info.get("thumbnail")
+            
+                    cc = (
+                        f"<b>──────  <i>YT ID </i>: {str(count).zfill(3)}  ──────</b>\n\n"
+                        f"<b>🎬 ᴛɪᴛʟᴇ :</b> {yt_title}\n\n"
+                        f"<blockquote>"
+                        f"<b>💠 ʙᴀᴛᴄʜ :</b> {b_name}\n"
+                        f"</blockquote>\n"
+                        f"<b> 📥 ᴇxᴛʀᴀᴄᴛᴇᴅ ʙʏ :</b> {CR}"
+                    )
+ 
+                    # Send thumbnail + caption pehle
+                    await bot.send_photo(channel_id, yt_thumb, caption=cc)
+ 
+         # Fir normal download ke liye command
+                    cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
+                except Exception as e:
+                    await m.reply_text(f"❌ YouTube fetch error: {e}")
+ 
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
-
+ 
             try:
                 cc = f'🎞️𝐓𝐢𝐭𝐥𝐞 » `{name} [{res}].mp4`\n🔗𝐋𝐢𝐧𝐤 » <a href="{link}">__**CLICK HERE**__</a>\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » `{CREDIT}`'
                 cc1 = f'📕𝐓𝐢𝐭𝐥𝐞 » `{name}`\n🔗𝐋𝐢𝐧𝐤 » <a href="{link}">__**CLICK HERE**__</a>\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » `{CREDIT}`'
