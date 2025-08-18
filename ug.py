@@ -511,10 +511,10 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                 temp_thumb = f"downloads/thumb_{part}.jpg"
                 subprocess.run(f'ffmpeg -i "{part}" -ss 00:00:10 -vframes 1 -q:v 2 -y "{temp_thumb}"', shell=True)
                 if os.path.exists(temp_thumb):
-                   # spaced_text = ' '.join(watermark)
-                   # text_cmd = f'ffmpeg -i "{temp_thumb}" -vf "drawbox=y=0:color=black@0.5:width=iw:height=200:t=fill,drawtext=fontfile=font.otf:text=\'{spaced_text}\':fontcolor=white:fontsize=90:x=(w-text_w)/2:y=60" -c:v mjpeg -q:v 2 -y "{temp_thumb}"'
-                 #   subprocess.run(text_cmd, shell=True)
-                #thumbnail = temp_thumb if os.path.exists(temp_thumb) else None
+                    spaced_text = ' '.join(watermark)
+                    text_cmd = f'ffmpeg -i "{temp_thumb}" -vf "drawbox=y=0:color=black@0.5:width=iw:height=200:t=fill,drawtext=fontfile=font.otf:text=\'{spaced_text}\':fontcolor=white:fontsize=90:x=(w-text_w)/2:y=60" -c:v mjpeg -q:v 2 -y "{temp_thumb}"'
+                    subprocess.run(text_cmd, shell=True)
+                thumbnail = temp_thumb if os.path.exists(temp_thumb) else None
             
             reply = await m.reply_text(f"**Uploading Part {i}/{len(filename)}**")
             dur = int(duration(part))
@@ -594,9 +594,9 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
             temp_thumb = f"downloads/thumb_{os.path.basename(filename)}.jpg"
             subprocess.run(f'ffmpeg -i "{filename}" -ss 00:00:10 -vframes 1 -q:v 2 -y "{temp_thumb}"', shell=True)
             if os.path.exists(temp_thumb):
-                #spaced_text = ' '.join(watermark)
-                #ext_cmd = f'ffmpeg -i "{temp_thumb}" -vf "drawbox=y=0:color=black@0.5:width=iw:height=200:t=fill,drawtext=fontfile=font.otf:text=\'{spaced_text}\':fontcolor=white:fontsize=90:x=(w-text_w)/2:y=60" -c:v mjpeg -q:v 2 -y "{temp_thumb}"'
-                #bprocess.run(text_cmd, shell=True)
+                spaced_text = ' '.join(watermark)
+                text_cmd = f'ffmpeg -i "{temp_thumb}" -vf "drawbox=y=0:color=black@0.5:width=iw:height=200:t=fill,drawtext=fontfile=font.otf:text=\'{spaced_text}\':fontcolor=white:fontsize=90:x=(w-text_w)/2:y=60" -c:v mjpeg -q:v 2 -y "{temp_thumb}"'
+                subprocess.run(text_cmd, shell=True)
             thumbnail = temp_thumb if os.path.exists(temp_thumb) else None
             
         await prog.delete(True)
