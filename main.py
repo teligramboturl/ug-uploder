@@ -68,20 +68,6 @@ import apixug
 from apixug import SecureAPIClient
 from db import db
 
-# safe conversion functions
-def safe_int(val, default=0):
-    try:
-        return int(val)
-    except:
-        return default
-
-def safe_float(val, default=0.0):
-    try:
-        return float(val)
-    except:
-        return default
-
-
 auto_flags = {}
 auto_clicked = False
 client = SecureAPIClient()
@@ -586,29 +572,7 @@ async def txt_handler(bot: Client, m: Message):
         raw_text3 = input3.text
         await input3.delete(True)
     except asyncio.TimeoutError:
-        raw_text3 = '/d'
-
-    if raw_text3 == '/d':
-        watermark = ""
-    else:
-        watermark = raw_text3
-
-    input_file = await client.download_media(message)
-    output_file = f"processed_{message.id}.mp4"
-    ffmpeg_cmd = [
-        "ffmpeg",
-        "-i", input_file,
-    ]
-
-    if watermark != "":
-        ffmpeg_cmd += [
-            "-vf", f"drawtext=text='{watermark}':x=(w-tw)/2:y=h-th-20:fontsize=24:fontcolor=white:box=1:boxcolor=black@0.5"
-        ]
-    ffmpeg_cmd += [output_file]
-        
-    
-
-
+        raw_text3 = '/d' 
         
     if raw_text3 == '/d':
         CR = f"{CREDIT}"
@@ -698,8 +662,8 @@ async def txt_handler(bot: Client, m: Message):
         await m.reply_text(f"**Fail Reason »**\n<blockquote><i>{e}</i></blockquote>\n\n✦𝐁𝐨𝐭 𝐌𝐚𝐝𝐞 𝐁𝐲 ✦ {CREDIT}🌟`")
 
     failed_count = 0
-    count = safe_int(raw_text)    
-    arg = safe_int(raw_text)
+    count =int(raw_text)    
+    arg = int(raw_text)
     try:
         for i in range(arg-1, len(links)):
             Vxy = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","")
@@ -871,11 +835,11 @@ async def txt_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={safe_int(raw_text2)}][ext=mp4]+ba[ext=m4a]/b[height<=?{safe_int(raw_text2)}]"
+                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
             elif "embed" in url:
-                ytf = f"bestvideo[height<={safe_int(raw_text2)}]+bestaudio/best[height<={safe_int(raw_text2)}]"
+                ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
             else:
-                ytf = f"b[height<={safe_int(raw_text2)}]/bv[height<={safe_int(raw_text2)}]+ba/b/bv+ba"
+                ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
            
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
@@ -1318,45 +1282,21 @@ async def text_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={safe_int(raw_text2)}][ext=mp4]+ba[ext=m4a]/b[height<=?{safe_int(raw_text2)}]"
+                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
             elif "embed" in url:
-                ytf = f"bestvideo[height<={safe_int(raw_text2)}]+bestaudio/best[height<={safe_int(raw_text2)}]"
+                ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
             else:
-                ytf = f"b[height<={safe_int(raw_text2)}]/bv[height<={safe_int(raw_text2)}]+ba/b/bv+ba"
+                ytf = f"b[height<={raw_text2}]/bv[height<={raw_text2}]+ba/b/bv+ba"
            
             if "jw-prod" in url:
                 cmd = f'yt-dlp -o "{name}.mp4" "{url}"'
             elif "webvideos.classplusapp." in url:
                cmd = f'yt-dlp --add-header "referer:https://web.classplusapp.com/" --add-header "x-cdn-tag:empty" -f "{ytf}" "{url}" -o "{name}.mp4"'
             elif "youtube.com" in url or "youtu.be" in url:
-                try:
-                    from yt_dlp import YoutubeDL
-                    ydl_opts = {"quiet": True, "skip_download": True}
-                    with YoutubeDL(ydl_opts) as ydl:
-                        info = ydl.extract_info(url, download=False)
-                        yt_title = info.get("title")
-                        yt_thumb = info.get("thumbnail")
-            
-                    cc = (
-                        f"<b>──────  <i>YT ID </i>: {str(count).zfill(3)}  ──────</b>\n\n"
-                        f"<b>🎬 ᴛɪᴛʟᴇ :</b> {yt_title}\n\n"
-                        f"<blockquote>"
-                        f"<b>💠 ʙᴀᴛᴄʜ :</b> {b_name}\n"
-                        f"</blockquote>\n"
-                        f"<b> 📥 ᴇxᴛʀᴀᴄᴛᴇᴅ ʙʏ :</b> {CR}"
-                    )
- 
-                    # Send thumbnail + caption pehle
-                    await bot.send_photo(channel_id, yt_thumb, caption=cc)
- 
-         # Fir normal download ke liye command
-                    cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
-                except Exception as e:
-                    await m.reply_text(f"❌ YouTube fetch error: {e}")
- 
+                cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
- 
+
             try:
                 cc = f'🎞️𝐓𝐢𝐭𝐥𝐞 » `{name} [{res}].mp4`\n🔗𝐋𝐢𝐧𝐤 » <a href="{link}">__**CLICK HERE**__</a>\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » `{CREDIT}`'
                 cc1 = f'📕𝐓𝐢𝐭𝐥𝐞 » `{name}`\n🔗𝐋𝐢𝐧𝐤 » <a href="{link}">__**CLICK HERE**__</a>\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » `{CREDIT}`'
