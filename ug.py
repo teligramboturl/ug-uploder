@@ -495,7 +495,7 @@ async def download_and_decrypt_video(url, cmd, name, key):
             print(f"Failed to decrypt {video_path}.")  
             return None  
 
-async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, channel_id, watermark="UG"):
+async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, channel_id, watermark=""):
     # Get log channel ID (don't validate)
     log_channel = db.get_log_channel(bot.me.username)
     
