@@ -593,6 +593,8 @@ async def txt_handler(bot: Client, m: Message):
     else:
         watermark = raw_text3
 
+    input_file = await client.download_media(message)
+    output_file = f"processed_{message.id}.mp4"
     ffmpeg_cmd = [
         "ffmpeg",
         "-i", input_file,
