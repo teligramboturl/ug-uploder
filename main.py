@@ -835,7 +835,7 @@ async def txt_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<={raw_text2}]"
+                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
             elif "embed" in url:
                 ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
             else:
@@ -846,6 +846,13 @@ async def txt_handler(bot: Client, m: Message):
             elif "webvideos.classplusapp." in url:
                cmd = f'yt-dlp --add-header "referer:https://web.classplusapp.com/" --add-header "x-cdn-tag:empty" -f "{ytf}" "{url}" -o "{name}.mp4"'
             elif "youtube.com" in url or "youtu.be" in url:
+                cc = (
+                     f"<b>──────  <i>VID ID </i>: {str(count).zfill(3)}  ──────</b>\n\n"
+                     f"<b>🎥 Title:</b> {name1}\n\n"
+                     f"<b>🔗 Video Link:</b> {url}\n\n"
+                     f"<blockquote><b>💠 Batch:</b> {b_name}</blockquote>\n"
+                     f"<b>📥 Extracted By:</b> {CR}"
+                    ) 
                 cmd = f'yt-dlp --cookies youtube_cookies.txt -f "{ytf}" "{url}" -o "{name}".mp4'
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
@@ -869,13 +876,13 @@ async def txt_handler(bot: Client, m: Message):
                      )
                 cczip = f'[📁]Zip Id : {str(count).zfill(3)}\n**Zip Title :** `{name1} .zip`\n<blockquote><b>Batch Name :</b> {b_name}</blockquote>\n\n**Extracted by➤**{CR}\n' 
                 ccimg = (
-    f"<b>──────  <i>IMG ID </i>: {str(count).zfill(3)}  ──────</b>\n\n"
-    f"<b>🖼️ ᴛɪᴛʟᴇ</b> : {name1}\n\n"
-    f"<blockquote>"
-    f"<b>💠 ʙᴀᴛᴄʜ :</b> {b_name}\n"
-    f"</blockquote>\n"
-    f"<b> 📥 ᴇxᴛʀᴀᴄᴛᴇᴅ ʙʏ :</b> {CR}"
-)
+                     f"<b>──────  <i>IMG ID </i>: {str(count).zfill(3)}  ──────</b>\n\n"
+                     f"<b>🖼️ ᴛɪᴛʟᴇ</b> : {name1}\n\n"
+                     f"<blockquote>"
+                     f"<b>💠 ʙᴀᴛᴄʜ :</b> {b_name}\n"
+                     f"</blockquote>\n"
+                     f"<b> 📥 ᴇxᴛʀᴀᴄᴛᴇᴅ ʙʏ :</b> {CR}"
+                     )
                 ccm = f'[🎵]Audio Id : {str(count).zfill(3)}\n**Audio Title :** `{name1} .mp3`\n<blockquote><b>Batch Name :</b> {b_name}</blockquote>\n\n**Extracted by➤**{CR}\n'
                 cchtml = f'[🌐]Html Id : {str(count).zfill(3)}\n**Html Title :** `{name1} .html`\n<blockquote><b>Batch Name :</b> {b_name}</blockquote>\n\n**Extracted by➤**{CR}\n'
                   
@@ -1282,7 +1289,7 @@ async def text_handler(bot: Client, m: Message):
                 url = url.split('*')[0]
 
             if "youtu" in url:
-                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<={raw_text2}]"
+                ytf = f"bv*[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[height<=?{raw_text2}]"
             elif "embed" in url:
                 ytf = f"bestvideo[height<={raw_text2}]+bestaudio/best[height<={raw_text2}]"
             else:
